@@ -1,0 +1,591 @@
+/* ==================================================================
+   Janelas: ficha do item e comanda
+   ================================================================== */
+
+dialog {
+  padding: 0;
+  border: 0;
+  color: var(--xicara);
+  background: transparent;
+  max-width: 100%;
+  max-height: 100%;
+}
+dialog::backdrop {
+  background: rgb(20 10 8 / 0.72);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Ficha do item                                                       */
+/* ------------------------------------------------------------------ */
+
+.ficha {
+  width: min(560px, calc(100% - 2rem));
+  max-height: min(90svh, 880px);
+  margin: auto;
+  border-radius: 10px;
+  background: var(--creme);
+  box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.8);
+  overflow: hidden;
+}
+.ficha[open] {
+  display: flex;
+  flex-direction: column;
+  animation: sobe 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ficha__corpo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: min(90svh, 880px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ficha__fechar,
+.comanda__fechar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.ficha__fechar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  background: rgb(243 237 227 / 0.92);
+  color: var(--espresso);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+}
+
+.ficha__foto {
+  flex: none;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+}
+/* Sem foto do prato: vira uma faixa de arabescos no topo da ficha */
+.ficha__foto:has(.foto--reservada) {
+  aspect-ratio: 5 / 1;
+}
+.ficha__foto .foto__xicara {
+  width: 40px;
+}
+
+.ficha__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1.25rem 1.5rem 0.5rem;
+  text-align: center;
+}
+.ficha__categoria {
+  font-family: var(--fonte-titulo);
+  font-size: 0.66rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--cobre);
+}
+.ficha__titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  color: var(--espresso);
+}
+.ficha__descricao {
+  margin-top: 0.4rem;
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--cobre);
+  max-width: 36ch;
+}
+.ficha__marcas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+.ficha__aviso {
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  color: var(--cobre);
+}
+
+.ficha__salao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.75rem 2rem;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+.ficha__opcoes {
+  padding-bottom: 0.5rem;
+}
+
+.grupo {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  border: 0;
+  border-top: 1px dotted rgb(94 58 47 / 0.3);
+  min-width: 0;
+}
+/* legend flutuando: fica dentro do padding e não "corta" a linha pontilhada */
+fieldset.grupo > legend {
+  float: left;
+}
+fieldset.grupo > legend + * {
+  clear: both;
+}
+.grupo__titulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0.4rem;
+  font-family: var(--fonte-titulo);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--espresso);
+}
+.grupo__obrigatorio,
+.grupo__opcional {
+  font-family: var(--fonte-texto);
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-transform: none;
+  font-style: italic;
+  color: var(--cobre);
+  white-space: nowrap;
+}
+.grupo__obrigatorio {
+  font-style: normal;
+  padding: 0 0.55rem;
+  border-radius: 999px;
+  background: rgb(140 74 51 / 0.12);
+}
+.grupo--faltando {
+  background: rgb(140 74 51 / 0.07);
+  box-shadow: inset 3px 0 0 var(--cobre);
+}
+.grupo__erro {
+  color: var(--cobre);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+.grupo__ajuda {
+  margin-top: 0.4rem;
+  font-size: 0.98rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.grupo__escolhas {
+  display: grid;
+}
+.grupo__escolhas--compacto {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  column-gap: 1rem;
+}
+
+.escolha {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 48px;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgb(94 58 47 / 0.08);
+  cursor: pointer;
+  font-size: 1.12rem;
+  line-height: 1.3;
+}
+.escolha:last-child {
+  border-bottom: 0;
+}
+.escolha input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--cobre);
+}
+.escolha__nome {
+  flex: 1;
+  color: var(--espresso);
+}
+.escolha__nome em {
+  color: var(--cobre);
+}
+.escolha__preco {
+  font-family: var(--fonte-titulo);
+  font-size: 0.88rem;
+  color: var(--xicara);
+  white-space: nowrap;
+}
+.escolha--confirmar {
+  border: 0;
+}
+
+.ficha__rodape {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom));
+  background: var(--creme);
+  border-top: 1px solid rgb(94 58 47 / 0.15);
+  box-shadow: 0 -12px 24px -16px rgb(0 0 0 / 0.35);
+  margin-top: auto;
+}
+.ficha__adicionar {
+  flex: 1;
+  justify-content: space-between;
+  padding-inline: 1.3rem;
+  font-size: 0.74rem;
+}
+@media (max-width: 420px) {
+  .ficha__adicionar .so-largo {
+    display: none;
+  }
+}
+.ficha__adicionar span:last-child {
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+.ficha__corpo--feito {
+  align-items: center;
+  gap: 0.6rem;
+  padding: 3rem 1.5rem 2.25rem;
+  text-align: center;
+}
+.ficha__feito-titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.35rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--espresso);
+}
+.ficha__feito-texto {
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--cobre);
+}
+.ficha__feito-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 639px) {
+  .ficha {
+    width: 100%;
+    margin: auto 0 0;
+    border-radius: 16px 16px 0 0;
+    max-height: 92svh;
+  }
+  .ficha__corpo {
+    max-height: 92svh;
+  }
+}
+
+@keyframes sobe {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Comanda: um canhoto de papel com serrilha                            */
+/* ------------------------------------------------------------------ */
+
+.painel {
+  width: 100%;
+  height: 100svh;
+  max-height: 100svh;
+  margin: 0;
+  inset: 0;
+}
+.painel[open] {
+  display: flex;
+  align-items: flex-end;
+  animation: sobe 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.comanda {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 94svh;
+  margin-top: auto;
+  background: var(--creme);
+  border-radius: 0;
+  box-shadow: 0 -20px 60px -20px rgb(0 0 0 / 0.7);
+}
+
+/* Serrilha de papel picotado no topo */
+.comanda__serrilha {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+  background: radial-gradient(circle at 8px 10px, var(--creme) 6.5px, transparent 7px) repeat-x;
+  background-size: 16px 10px;
+}
+
+.comanda__cabeca {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.1rem 1rem 0.9rem 1.5rem;
+  border-bottom: 1px dashed rgb(94 58 47 / 0.35);
+}
+.comanda__monograma {
+  width: 42px;
+  height: 42px;
+  color: var(--cobre);
+  flex: none;
+}
+.comanda__cabeca > div {
+  flex: 1;
+}
+.comanda__titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--espresso);
+  line-height: 1.1;
+}
+.comanda__numero {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--cobre);
+}
+.comanda__fechar {
+  background: none;
+  color: var(--espresso);
+}
+
+.comanda__linhas,
+.comanda__form {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.comanda__linhas {
+  padding: 0.5rem 1.5rem;
+}
+
+.comanda__linha {
+  padding: 0.9rem 0;
+  border-bottom: 1px dotted rgb(94 58 47 / 0.3);
+}
+.comanda__linha-topo,
+.comanda__total {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.comanda__linha-nome {
+  font-family: var(--fonte-titulo);
+  font-size: 0.98rem;
+  letter-spacing: 0.03em;
+  color: var(--espresso);
+}
+.comanda__pontos {
+  flex: 1 1 1rem;
+  min-width: 1rem;
+  border-bottom: 1px dotted rgb(94 58 47 / 0.45);
+  transform: translateY(-0.32em);
+}
+.comanda__linha-valor {
+  font-family: var(--fonte-titulo);
+  font-size: 0.92rem;
+  color: var(--espresso);
+  white-space: nowrap;
+}
+.comanda__detalhes {
+  margin-top: 0.15rem;
+  padding-left: 0.8rem;
+  font-size: 1.02rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--cobre);
+}
+.comanda__linha-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.comanda__remover {
+  min-height: 44px;
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--xicara);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.comanda__rodape {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem calc(1rem + env(safe-area-inset-bottom));
+  border-top: 1px dashed rgb(94 58 47 / 0.35);
+  background: var(--creme);
+}
+.comanda__form .comanda__rodape {
+  position: sticky;
+  bottom: 0;
+  margin-top: 0.5rem;
+}
+.comanda__total span:first-child {
+  font-family: var(--fonte-titulo);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--espresso);
+}
+.comanda__total strong {
+  font-family: var(--fonte-titulo);
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--espresso);
+}
+.comanda__total small {
+  font-family: var(--fonte-texto);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--cobre);
+}
+.comanda__validade {
+  font-size: 0.95rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.comanda__form .grupo:first-child {
+  border-top: 0;
+}
+
+.comanda__vazia,
+.comanda__enviado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.75rem calc(2.5rem + env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 1.15rem;
+}
+.comanda__vazia .botao {
+  margin-top: 0.75rem;
+}
+.comanda__vazia-titulo,
+.comanda__enviado-titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--espresso);
+}
+
+/* Botões de duas opções (retirada/entrega, agora/agendar) */
+.alternador {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+.alternador label {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 50px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgb(94 58 47 / 0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--espresso);
+  transition: background-color var(--transicao), color var(--transicao);
+}
+.alternador input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.alternador label.ativo {
+  background: var(--espresso);
+  border-color: var(--espresso);
+  color: var(--creme);
+}
+.alternador label:has(input:focus-visible) {
+  outline: 2px solid var(--cobre);
+  outline-offset: 2px;
+}
+
+/* Desktop: a comanda vira um canhoto ao lado direito */
+@media (min-width: 700px) {
+  .painel[open] {
+    justify-content: flex-end;
+    align-items: stretch;
+    padding: 1.25rem;
+    animation-name: entra-lado;
+  }
+  .comanda {
+    width: 440px;
+    max-height: none;
+    margin-top: 0;
+    border-radius: 0 0 6px 6px;
+    margin-top: 10px;
+  }
+}
+
+@keyframes entra-lado {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
