@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/marca/og.jpg", width: 1200, height: 630, alt: "Selo do Espaço Café" }],
   },
-  icons: { apple: "/marca/selo-quadrado.jpg" },
 };
 
 export const viewport: Viewport = {
