@@ -10,7 +10,7 @@ export const textos = {
     chamada: "Cafeteria em Santa Cruz do Rio Pardo",
     apresentacao:
       "Café feito com calma, doces de vitrine e mesas de madeira esperando por você. Tradição de cafeteria, acolhimento de casa e o requinte dos pequenos detalhes.",
-    anel: "Um lugar para pausar · Cafeteria · Santa Cruz do Rio Pardo · ",
+    anel: "Um lugar para repousar · Cafeteria · Santa Cruz do Rio Pardo · ",
     rolar: "Role devagar. Aqui ninguém tem pressa.",
   },
 

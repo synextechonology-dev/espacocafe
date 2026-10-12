@@ -17,7 +17,7 @@ export interface Expediente {
 export const site = {
   nome: "Espaço Café",
   complemento: "Cafeteria",
-  slogan: "Um lugar para pausar.",
+  slogan: "Um lugar para repousar.",
   apresentacao:
     "Tradição de cafeteria, acolhimento de casa e o requinte dos pequenos detalhes.",
 

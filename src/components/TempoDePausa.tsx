@@ -22,7 +22,7 @@ export function TempoDePausa() {
 
   return (
     <p className="pausa">
-      Você já está pausando com a gente há <strong>{tempo}</strong>.{" "}
+      Você já está repousando com a gente há <strong>{tempo}</strong>.{" "}
       <span className="pausa__resto">Imagina com um cappuccino na mão.</span>
     </p>
   );
